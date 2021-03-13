@@ -1,0 +1,9 @@
+FROM openjdk:8
+ 
+#COPY target/lib /app/lib
+COPY grpc-client.jar /tmp/echo-client.jar
+
+EXPOSE 8080
+EXPOSE 9092
+
+ENTRYPOINT ["java", "-jar", "/tmp/echo-client.jar"]

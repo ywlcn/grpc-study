@@ -21,9 +21,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-/**
- * Created by rayt on 6/22/17.
- */
+
 public class KubernetesNameResolver extends NameResolver {
 	private final String namespace;
 	private final String name;
@@ -90,7 +88,7 @@ public class KubernetesNameResolver extends NameResolver {
 				endpoints.getSubsets().forEach(f -> {					
 					f.getAddresses().forEach( g -> address.add(g.getIp()) );					
 				});
-				System.out.println(address.toString() );
+				System.out.println("ServerList:" + address.toString() );
 			}
 
 			update(endpoints);

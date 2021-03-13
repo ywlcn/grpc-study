@@ -1,5 +1,6 @@
 package com.example.grpc;
 
+import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -9,6 +10,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.example.grpc.client.utl.GrpcConfig;
+import com.example.grpc.k8s.client.ClientSideLoadBalancedEchoClient;
 import com.example.grpc.protodefine.HelloWorldGrpc;
 import com.example.grpc.protodefine.Helloworld.HelloReply;
 import com.example.grpc.protodefine.Helloworld.HelloRequest;
@@ -21,6 +23,16 @@ public class GrpcClientApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(GrpcClientApplication.class, args);
+		
+		
+		try {
+			ClientSideLoadBalancedEchoClient.main(null);
+		} catch (UnknownHostException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 	}
 
 	

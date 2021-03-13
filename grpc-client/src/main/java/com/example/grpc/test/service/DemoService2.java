@@ -14,16 +14,16 @@ import com.example.grpc.protodefine.Helloworld.PerforData;
 
 import io.grpc.stub.StreamObserver;
 
-public class DemoService extends HelloWorldGrpc.HelloWorldImplBase {
-	static Logger logger = LoggerFactory.getLogger(DemoService.class);
+public class DemoService2 extends HelloWorldGrpc.HelloWorldImplBase {
+	static Logger logger = LoggerFactory.getLogger(DemoService2.class);
 
 	int port;
 
-	public DemoService() {
+	public DemoService2() {
 		this(-1);
 	}
 
-	public DemoService(int port) {
+	public DemoService2(int port) {
 		this.port = port;
 	}
 
@@ -31,7 +31,7 @@ public class DemoService extends HelloWorldGrpc.HelloWorldImplBase {
 	public void sayHello(HelloRequest request, StreamObserver<HelloReply> responseObserver) {
 
 		try {
-			String from ="DemoService " +  InetAddress.getLocalHost().getHostAddress();
+			String from = "DemoService2 " + InetAddress.getLocalHost().getHostAddress();
 
 			HelloReply reply = HelloReply.newBuilder().setMessage("Hello " + request.getName() + "   from: " + from)
 					.build();

@@ -10,10 +10,6 @@ import javax.annotation.Nullable;
 import java.net.URI;
 
 /**
- * Created by rayt on 6/22/17.
- */
-
-/**
  * Usage: kubernetes:///{namespace}/{service}/{port} E.g.:
  * kubernetes:///default/echo-server/8080
  */

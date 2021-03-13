@@ -16,6 +16,8 @@ import com.example.grpc.server.interceptor.FirstServerInterceptor;
 import com.example.grpc.server.interceptor.SecondServerInterceptor;
 import com.example.grpc.server.interceptor.ThirdServerInterceptor;
 import com.example.grpc.test.service.DemoService;
+import com.example.grpc.test.service.DemoService2;
+import com.example.grpc.test.service.EarthService;
 
 import io.grpc.BindableService;
 import io.grpc.Server;
@@ -23,13 +25,14 @@ import io.grpc.ServerBuilder;
 //import io.grpc.internal.ServerImplBuilder;
 import io.grpc.ServerInterceptor;
 import io.grpc.ServerInterceptors;
+import io.grpc.protobuf.services.ProtoReflectionService;
 
 public class InterceptorSortServerDemo {
 
 	public static void main(String[] args) throws Exception {
-				
+
 		startServer();
- 
+
 	}
 
 	private static void simpleStartServer(int port) {
@@ -50,8 +53,9 @@ public class InterceptorSortServerDemo {
 		Server server = null; // = ServerBuilder.forPort(6565).addService(new HelloWorlController()).build();
 
 		ServerBuilder<?> serverBuilder = ServerBuilder.forPort(port);
-		
-		serverBuilder.useTransportSecurity(new File("src/main/resources/tls/cert.pem"), new File("src/main/resources/tls/key.pem"));
+
+		serverBuilder.useTransportSecurity(new File("src/main/resources/tls/cert.pem"),
+				new File("src/main/resources/tls/key.pem"));
 
 		DemoService service = new DemoService();
 
@@ -86,11 +90,19 @@ public class InterceptorSortServerDemo {
 
 		DemoService service = new DemoService();
 
+
+		serverBuilder.addService(new DemoService2());
+		serverBuilder.addService(new EarthService());
+		
 		// インターセプター 独自のサービスに対する
 		List<ServerInterceptor> interceptors = new ArrayList<>();
 		interceptors.add(new FirstServerInterceptor());
 		serverBuilder.addService(ServerInterceptors.intercept(service.bindService(), interceptors));
+		
+		
+		serverBuilder.addService(ProtoReflectionService.newInstance());
 
+		 
 		server = serverBuilder.build();
 		server.start();
 		server.awaitTermination();

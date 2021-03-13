@@ -14,10 +14,13 @@ import com.example.grpc.client.interceptor.HelloClientInterceptor;
 import com.example.grpc.client.interceptor.SecondClientInterceptor;
 import com.example.grpc.client.interceptor.ThirdClientInterceptor;
 import com.example.grpc.client.utl.GrpcConfig;
+import com.example.grpc.protodefine.DataType.CommonRequest;
+import com.example.grpc.protodefine.EarthServiceGrpc;
 import com.example.grpc.protodefine.HelloWorldGrpc;
 import com.example.grpc.protodefine.Helloworld.HelloReply;
 import com.example.grpc.protodefine.Helloworld.HelloRequest;
 import com.example.grpc.server.interceptor.FirstServerInterceptor;
+import com.example.grpc.test.service.EarthService;
 import com.google.common.util.concurrent.Uninterruptibles;
 
 import io.grpc.CallOptions;
@@ -102,6 +105,14 @@ public class InterceptorSortClientDemo {
 //		logger.info("normalCall from server" + stub.sayHello(request));
 //		logger.info("normalCall from server" + stub.sayHello(request));
 //		logger.info("normalCall from server" + stub.sayHello(request));
+		
+		
+		EarthServiceGrpc.EarthServiceBlockingStub earthStub = EarthServiceGrpc.newBlockingStub(channel);
+		CommonRequest commonRequest = CommonRequest.newBuilder().setName(requestBody).build();
+		
+		logger.info("normalCall from EarthService " + earthStub.sayHello(commonRequest));
+		
+		
 		GrpcConfig.shutDownChannel(channel);
 
 	}

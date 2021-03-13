@@ -39,7 +39,7 @@ dependencies {
  	implementation "io.fabric8:kubernetes-client:5.0.1"
 
  	
- 	
+	implementation "io.grpc:grpc-services:${grpcVersion}"
  	
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }

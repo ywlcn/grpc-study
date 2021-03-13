@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run: grpc-server
+  name: grpc-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: grpc-server
+  template:
+    metadata:
+      labels:
+        run: grpc-server
+    spec:
+      containers:
+      - name: grpc-server
+#        image: nexus.vbox.local:8082/k8s-lb-server-app:latest
+        image: grpc-server:latest
+        imagePullPolicy: Never
+#        command:
+#          - "/bin/sh"
+#          - "-c"
+#          - "while :; do sleep 10; done"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    run: grpc-server
+  name: grpc-server
+spec:
+  clusterIP: None
+  ports:
+  - name: grpc
+    port: 9092
+    protocol: TCP
+    targetPort: 9092
+  selector:
+    run: grpc-server
+  type: ClusterIP

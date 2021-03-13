@@ -60,7 +60,7 @@ public class ClientSideLoadBalancedEchoClient {
 
 //		String target = "kubernetes:///default/hello-minikube/80";
 
-		String target = "kubernetes:///default/echo-server/9092";
+		String target = "kubernetes:///default/grpc-server/9092";
 
 		if (target == null || target.isEmpty()) {
 			target = "localhost:8080";
@@ -85,14 +85,12 @@ public class ClientSideLoadBalancedEchoClient {
 			HelloWorldGrpc.HelloWorldBlockingStub stub = HelloWorldGrpc.newBlockingStub(channel);
 			
 //			HelloWorldGrpc.HelloWorldBlockingStub stub1 = HelloWorldGrpc.newFutureStub(channel)
-
-			
 			
 			executorService.submit(() -> {
 				while (true) {
 
 					try {
-						Thread.sleep(RANDOM.nextInt(5000));
+						Thread.sleep(1000);
 						
 						HelloReply response = stub.sayHello(HelloRequest.newBuilder()
 								.setName(self + ": " + Thread.currentThread().getName()).build());
@@ -101,7 +99,7 @@ public class ClientSideLoadBalancedEchoClient {
 
 					} catch (StatusRuntimeException ex) {
 
-//						System.err.println(ex.getCause().toString());
+						System.err.println(ex.getCause().toString());
 
 					} catch (Exception ex) {
 						ex.printStackTrace();

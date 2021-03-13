@@ -7,9 +7,10 @@ import "dataType.proto";
 
 package com.example.grpc.protodefine;
 
-service EarthService {
+service SunService {
 
 	rpc SayHello  (CommonRequest) returns (CommonResponse) {}
+
 
 }
 

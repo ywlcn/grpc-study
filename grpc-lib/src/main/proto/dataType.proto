@@ -5,10 +5,7 @@ option java_package = "com.example.grpc.protodefine";
 
 package com.example.grpc.protodefine;
 
-service HelloWorld {
 
-
-}
 
 message CommonRequest {
   	string name = 1;
