@@ -1,0 +1,61 @@
+######################################
+#####      app                    ####
+######################################
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-client-app
+  labels:
+    app: test-client-app
+spec:
+#  serviceAccountName: aws-node
+#  securityContext:
+#    sysctls:
+#    - name: ******
+#      value: "******"
+  containers:
+  - name: client-app
+    image: nexus.vbox.local:8082/ramee-app:latest
+    env:
+    - name: ECHO_SERVICE_TARGET
+      value: "kubernetes:///default/echo-server/9092"
+#    resources:
+#      limits:
+#        memory: "1000Mi"
+#        cpu: "1.2"
+#    env:
+#    - name:  ******
+#      value: " ******"
+    ports:
+    - containerPort: 8080   # http
+    imagePullPolicy: Never
+    volumeMounts:
+    - name: app-volume
+      mountPath: /opt/boot-app/
+
+  nodeSelector:
+    apptype: client
+
+  volumes:
+  - name: app-volume
+    hostPath:
+      path: /tmp/app-volume-client
+
+---
+######################################
+#####     service                 ####
+######################################
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-client-app
+spec:
+  type: NodePort
+  selector:
+    app: test-client-app
+  ports:
+    - port: 8080
+      targetPort: 8080
+      protocol: TCP
+      nodePort: 30080
+      name: http

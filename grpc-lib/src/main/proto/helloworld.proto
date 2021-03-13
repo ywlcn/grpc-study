@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+option java_multiple_files = false;
+option java_package = "com.example.grpc.protodefine";
+
+package com.example.grpc.protodefine;
+
+service HelloWorld {
+
+	rpc SayHello  (HelloRequest) returns (HelloReply) {}
+
+	rpc SayHelloServerStreaming  (HelloRequest) returns (stream HelloReply) {}
+
+	rpc SayHelloClientStreaming  (stream HelloRequest) returns (HelloReply) {}
+
+	rpc SayHelloStreaming  (stream HelloRequest) returns (stream HelloReply) {}
+
+	rpc SayPerformacne  (PerforData) returns (PerforData) {}
+
+}
+
+message HelloRequest {
+  	string name = 1;
+	string fileName = 2;
+
+}
+
+message HelloReply {
+	string message = 1;
+	string fileName = 2;
+
+}
+
+message PerforData {
+  	string name = 1;
+	string id = 2;
+  	string tel = 3;
+	string address = 4;
+  	string sex = 5;
+}
+
+

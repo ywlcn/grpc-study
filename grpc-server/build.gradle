@@ -1,0 +1,66 @@
+buildscript {
+	ext.versions = [
+	]
+
+    repositories {
+        mavenCentral()
+    }
+    dependencies {			
+    	classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
+    }
+}
+
+
+apply plugin: 'eclipse'
+apply plugin: 'java'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'org.springframework.boot'
+
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation project(":grpc-lib")
+	
+	implementation "io.github.lognet:grpc-spring-boot-starter:4.1.0"
+	implementation "org.springframework.boot:spring-boot-starter-web"
+	
+	implementation "io.grpc:grpc-netty:${grpcVersion}"
+	implementation "io.grpc:grpc-protobuf:${grpcVersion}"
+	implementation "io.grpc:grpc-stub:${grpcVersion}"
+	
+	implementation "com.google.protobuf:protobuf-java-util:${protobufJavaUtil}"
+	
+ 	implementation "org.springframework.boot:spring-boot-starter-webflux"
+
+ 	//implementation "com.github.dozermapper:dozer-core:6.5.0"
+    compile group: 'net.sf.dozer', name: 'dozer', version: '5.5.1'
+
+
+ 	implementation "ch.qos.logback:logback-classic"
+
+	
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	
+	
+	// javax.ws.rs.core.MediaType  ・・・
+	implementation group: 'javax.ws.rs', name: 'javax.ws.rs-api', version: '2.1.1'
+	
+	
+	
+}
+
+
+	eclipse {
+	    classpath {
+	        downloadJavadoc = true
+	        downloadSources = true
+	    }
+	}
+
+test {
+	useJUnitPlatform()
+}

@@ -1,0 +1,137 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {			
+        classpath "com.google.protobuf:protobuf-gradle-plugin:${protobufGradlePluginVersion}"
+    }
+}
+
+
+apply plugin: 'eclipse'
+apply plugin: 'java'
+apply plugin: 'com.google.protobuf'
+apply plugin: 'maven-publish'
+
+group = 'org.mikeneck.sample'
+version = '1.0'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+    	implementation "io.grpc:grpc-protobuf:${grpcVersion}"
+    	implementation "io.grpc:grpc-stub:${grpcVersion}"
+		implementation "com.google.protobuf:protobuf-java:3.0.0"
+		compileOnly "javax.annotation:javax.annotation-api:1.3.2"
+}
+
+sourceSets {
+    main {
+        proto {
+            srcDir 'src/main/proto'
+        }
+        java {
+            srcDir 'src/main/java'
+        }
+    }
+}
+
+// publishing description
+publishing {
+//    publications {
+//        sample(MavenPublication) {
+//            from components.java
+//            artifact ('document.html') {
+//                classifier = 'doc'
+//                extension  = 'html'
+//            }
+//        }
+//    }
+
+   	publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            //artifact sourceJar
+            // more goes in here
+        }
+	}
+		
+    repositories {
+        maven {
+            url 'http://nexus.vbox.local:8081/repository/ramee-maven-host/'
+          	credentials {
+        		username = "admin"
+        		password = "admin456"
+      		}
+        }
+    }
+    
+    
+}
+
+
+
+//task sourceJar(type: Jar, dependsOn: classes) {
+//    classifier 'sources'
+//    from sourceSets.main.allSource
+//}
+// 
+//task javadocJar(type: Jar, dependsOn: javadoc) {
+//    classifier = 'javadoc'
+//    from javadoc.destinationDir
+//}
+
+
+
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:${protocVersion}"
+    }
+    plugins {
+        grpc {
+            artifact = "io.grpc:protoc-gen-grpc-java:${protocGenGrpcJavaVersion}"
+        }
+    }
+
+    generateProtoTasks {
+        ofSourceSet("main").forEach { task-> 
+			task.builtins {
+				java {
+					outputSubDir = 'java'
+				}
+			}
+			task.plugins {
+				grpc {
+					outputSubDir = 'java'
+				}
+			}
+        }
+    }
+    generatedFilesBaseDir = "$projectDir/src"
+}
+
+def defaultEncoding = "UTF-8"
+tasks.withType(AbstractCompile).each { it.options.encoding = defaultEncoding }
+
+
+tasks.withType(JavaCompile){
+	options.encoding = defaultEncoding
+}
+
+
+//configurations.all {
+// resolutionStrategy.eachDependency { details ->
+//    if ("io.grpc".equalsIgnoreCase(details.requested.group)) {
+//        details.useVersion "1.33.0"
+//        }
+//    }
+//}
+
+
+
+test {
+	useJUnitPlatform()
+}

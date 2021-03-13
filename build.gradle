@@ -1,0 +1,95 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        jcenter()
+        maven { url 'http://repo.spring.io/plugins-release' }
+        maven { url "https://plugins.gradle.org/m2/" }
+
+    }
+    dependencies {
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.5"
+        classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.11'
+        classpath "org.jfrog.buildinfo:build-info-extractor-gradle:4.0.0"
+    }
+}
+
+apply plugin: 'eclipse'
+
+allprojects {
+    repositories {
+        mavenCentral()
+        jcenter()
+        maven { url "https://repo.spring.io/milestone" }
+        maven { url "https://jitpack.io" }
+
+    }
+}
+
+subprojects {
+
+    apply plugin: 'java'
+    apply plugin: 'eclipse'
+
+    sourceCompatibility = 11
+    targetCompatibility = 11
+
+    test {
+        forkEvery = 1
+        testLogging {
+            exceptionFormat = 'full'
+        }
+    }
+
+	eclipse {
+	    classpath {
+	        //downloadJavadoc = true
+	        downloadSources = true
+	    }
+	}
+
+
+    dependencies {
+        ["annotationProcessor", "testAnnotationProcessor", "compileOnly", "testCompileOnly"].each { conf ->
+            add(conf, "org.projectlombok:lombok:1.18.12")
+        }
+   }
+
+
+
+
+}
+
+
+
+
+
+//    dependencies {
+//        ["annotationProcessor", "testAnnotationProcessor", "compileOnly", "testCompileOnly"].each { conf ->
+//            add(conf, "org.projectlombok:lombok:1.18.12")
+//        }
+//   }
+
+
+//task codeCoverageReport(type: JacocoReport) {
+//    executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
+//
+//    sourceSets (project('grpc-spring-boot-starter').sourceSets.main
+//            ,project('grpc-client-spring-boot-starter').sourceSets.main)
+//
+//    //subprojects.each {
+//    //sourceSets it.sourceSets.main
+//    //}
+//
+//    reports {
+//        xml.enabled true
+//        xml.destination  = new File(buildDir,"reports/jacoco/report.xml")
+//        html.enabled true
+//        csv.enabled false
+//    }
+//}
+
+//codeCoverageReport.dependsOn {
+//    subprojects*.test
+//}
+
+

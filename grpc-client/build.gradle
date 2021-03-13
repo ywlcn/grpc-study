@@ -1,0 +1,51 @@
+buildscript {
+	ext.versions = [
+	]
+
+    repositories {
+        mavenCentral()
+    }
+    dependencies {			
+    	classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	classpath("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
+    }
+}
+
+
+apply plugin: 'eclipse'
+apply plugin: 'java'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'org.springframework.boot'
+
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation project(":grpc-lib")
+	
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation "io.grpc:grpc-netty:${grpcVersion}"
+	implementation "io.grpc:grpc-protobuf:${grpcVersion}"
+	implementation "io.grpc:grpc-stub:${grpcVersion}"
+	implementation "com.google.protobuf:protobuf-java-util:${protobufJavaUtil}"
+ 	
+ 	implementation "org.springframework.boot:spring-boot-starter-webflux"
+ 		
+ 	implementation "ch.qos.logback:logback-classic"
+ 	
+ 	
+ 	implementation "io.fabric8:kubernetes-client:5.0.1"
+
+ 	
+ 	
+ 	
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+
+
+test {
+	useJUnitPlatform()
+}
