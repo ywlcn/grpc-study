@@ -33,6 +33,7 @@ public class Streaming {
 				.sayHelloStreaming(new StreamObserver<HelloReply>() {
 					@Override
 					public void onNext(HelloReply reply) {
+						System.out.println(reply.toString());
 						response.add(reply);
 					}
 
@@ -51,7 +52,7 @@ public class Streaming {
 		streamObserver.onNext(request);
 		streamObserver.onCompleted();
 		finishLatch.await(10, TimeUnit.SECONDS);
-		System.out.println(response.toString()); // [message: "Hello Tom" , message: "Hello Tom" , message: "Hello Tom"
+		//System.out.println(response.toString()); // [message: "Hello Tom" , message: "Hello Tom" , message: "Hello Tom"
 													// ,
 		// message: "Hello Tom" , message: "Hello Tom" , message: "Hello Tom" , message:
 		// "Hello Tom" , message: "Hello Tom" , message: "Hello Tom" ]
