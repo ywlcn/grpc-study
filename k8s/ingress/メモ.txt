@@ -1,0 +1,12 @@
+
+1.Ingress Controllerのインストーラ
+　　https://kubernetes.github.io/ingress-nginx/deploy/
+
+2.Ingressのインストーラ 参考：
+
+https://github.com/nginxinc/kubernetes-ingress/tree/master/examples/grpc-services
+
+
+3.手動で、80にもHttp2がアクセスできるように Nginx　Configの修正
+
+
