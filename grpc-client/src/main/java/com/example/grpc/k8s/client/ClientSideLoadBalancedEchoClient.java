@@ -22,7 +22,8 @@ public class ClientSideLoadBalancedEchoClient {
 	public static void run(int count) throws UnknownHostException, InterruptedException {
 
 		// "kubernetes:///default/echo-server/9092"
-		String target = System.getenv("ECHO_SERVICE_TARGET");
+//		String target = System.getenv("ECHO_SERVICE_TARGET");
+		String target = "kubernetes:///default/echo-server/9092";
 		if (target == null || target.isEmpty()) {
 			target = "localhost:8080";
 		}
@@ -60,42 +61,57 @@ public class ClientSideLoadBalancedEchoClient {
 
 //		String target = "kubernetes:///default/hello-minikube/80";
 
-		String target = "kubernetes:///default/grpc-server/9092";
+		String target = null; // "kubernetes:///default/echo-server/9092";
 
-		if (target == null || target.isEmpty()) {
-			target = "localhost:8080";
+		if (args != null && args.length > 0) {
+			target = "kubernetes:///default/hello-minikube/80";
+			target = args[0];
+		} else {
+//			target = "localhost:8080";30749 30388
+			target = "192.168.56.101:30749";
 		}
 
-		NameResolverRegistry nameResolverRegistry = NameResolverRegistry.getDefaultRegistry();
-		nameResolverRegistry.register(new KubernetesNameResolverProvider());
+		ManagedChannel channel = null;
+		if (target.startsWith("kubernetes:///")) {
 
-//	    final ManagedChannel channel = ManagedChannelBuilder.forTarget(target)
-//	        .nameResolverFactory(new KubernetesNameResolverProvider())  // this is on by default
-//	        .loadBalancerFactory(RoundRobinLoadBalancerFactory.getInstance())
-//	        .usePlaintext(true)
-//	        .build();
+			NameResolverRegistry nameResolverRegistry = NameResolverRegistry.getDefaultRegistry();
+			nameResolverRegistry.register(new KubernetesNameResolverProvider());
 
-		final ManagedChannel channel = ManagedChannelBuilder.forTarget(target).defaultLoadBalancingPolicy("round_robin")
-				.usePlaintext().build();
+//		    final ManagedChannel channel = ManagedChannelBuilder.forTarget(target)
+//		        .nameResolverFactory(new KubernetesNameResolverProvider())  // this is on by default
+//		        .loadBalancerFactory(RoundRobinLoadBalancerFactory.getInstance())
+//		        .usePlaintext(true)
+//		        .build();
+			channel = ManagedChannelBuilder.forTarget(target).defaultLoadBalancingPolicy("round_robin").usePlaintext()
+					.build();
+
+		} else {
+			channel = ManagedChannelBuilder.forTarget(target).usePlaintext().build();
+		}
+
+		accessServer(channel);
+
+	}
+
+	private static void accessServer(ManagedChannel channel) throws UnknownHostException {
 
 		final String self = InetAddress.getLocalHost().getHostName();
 
 		ExecutorService executorService = Executors.newFixedThreadPool(THREADS);
 		for (int i = 0; i < THREADS; i++) {
 			HelloWorldGrpc.HelloWorldBlockingStub stub = HelloWorldGrpc.newBlockingStub(channel);
-			
+
 //			HelloWorldGrpc.HelloWorldBlockingStub stub1 = HelloWorldGrpc.newFutureStub(channel)
-			
+
 			executorService.submit(() -> {
 				while (true) {
 
 					try {
 						Thread.sleep(1000);
-						
+
 						HelloReply response = stub.sayHello(HelloRequest.newBuilder()
 								.setName(self + ": " + Thread.currentThread().getName()).build());
 						System.out.println(response.getMessage() + " echoed");
-
 
 					} catch (StatusRuntimeException ex) {
 
@@ -108,5 +124,7 @@ public class ClientSideLoadBalancedEchoClient {
 				}
 			});
 		}
+
 	}
+
 }

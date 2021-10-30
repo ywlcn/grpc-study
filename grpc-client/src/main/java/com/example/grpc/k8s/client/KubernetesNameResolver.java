@@ -118,6 +118,8 @@ public class KubernetesNameResolver extends NameResolver {
 		listener.onAddresses(servers, Attributes.EMPTY);
 	}
 
+	
+	//******************   
 	@GuardedBy("this")
 	protected void watch() {
 		if (watching)
