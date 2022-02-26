@@ -7,10 +7,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.example.grpc.client.interceptor.HelloClientInterceptor;
+import com.example.grpc.k8s.k8sclient.K8sClientNameResolverProvider;
 
 import io.grpc.ClientInterceptor;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import io.grpc.NameResolverRegistry;
+
 
 @Component
 public class GrpcConfig implements DisposableBean {
@@ -45,6 +48,9 @@ public class GrpcConfig implements DisposableBean {
 	public ManagedChannel createChannel(String hostname, int port, ClientInterceptor clientInterceptor) {
 		ManagedChannelBuilder<?> managerdChannelBuilder = null;
 
+		NameResolverRegistry.getDefaultRegistry().register(new K8sClientNameResolverProvider());
+
+		
 		if (clientInterceptor == null) {
 			managerdChannelBuilder = ManagedChannelBuilder.forAddress(hostname, port);
 		} else {
@@ -52,6 +58,11 @@ public class GrpcConfig implements DisposableBean {
 		}
 //		ManagedChannel channel = managerdChannelBuilder.intercept(new HelloClientInterceptor()).usePlaintext().enableRetry().build();
 
+//
+//		ManagedChannel channel = ManagedChannelBuilder.forTarget(target).defaultLoadBalancingPolicy("round_robin")
+//				.usePlaintext().build();
+	
+		
 		ManagedChannel channel = managerdChannelBuilder.intercept().usePlaintext().enableRetry().build();
 		return channel;
 	}

@@ -39,9 +39,12 @@ public class HelloClientInterceptor implements ClientInterceptor {
 //				} catch (InvalidProtocolBufferException e) {
 //					logger.error(e.getMessage());
 //				}
-				logger.info("ClientInterceptor   sendMessage ---start");
+				
+				System.out.println("channel's hash" + channel.hashCode());
+				
+//				logger.info("ClientInterceptor   sendMessage ---start");
 				super.sendMessage(message);
-				logger.info("ClientInterceptor   sendMessage ---end");
+//				logger.info("ClientInterceptor   sendMessage ---end");
 			}
 
 			@Override
@@ -52,26 +55,26 @@ public class HelloClientInterceptor implements ClientInterceptor {
 				super.start(listener, headers);
 			}
 
-			@Override
-			public void request(int numMessages) {
-				logger.info("ClientInterceptor   request ---start   " + numMessages);
-				super.request(numMessages);
-				logger.info("ClientInterceptor   request ---end");
-			}
-
-			@Override
-			public void halfClose() {
-				logger.info("ClientInterceptor   halfClose ---start");
-				super.halfClose();
-				logger.info("ClientInterceptor   halfClose ---end");
-			}
-
-			@Override
-			public void cancel(@Nullable String message, @Nullable Throwable cause) {
-				logger.info("ClientInterceptor   cancel ---start");
-				super.cancel(message, cause);
-				logger.info("ClientInterceptor   cancel ---end");
-			}
+//			@Override
+//			public void request(int numMessages) {
+//				logger.info("ClientInterceptor   request ---start   " + numMessages);
+//				super.request(numMessages);
+//				logger.info("ClientInterceptor   request ---end");
+//			}
+//
+//			@Override
+//			public void halfClose() {
+//				logger.info("ClientInterceptor   halfClose ---start");
+//				super.halfClose();
+//				logger.info("ClientInterceptor   halfClose ---end");
+//			}
+//
+//			@Override
+//			public void cancel(@Nullable String message, @Nullable Throwable cause) {
+//				logger.info("ClientInterceptor   cancel ---start");
+//				super.cancel(message, cause);
+//				logger.info("ClientInterceptor   cancel ---end");
+//			}
 
 		};
 	}
@@ -90,51 +93,51 @@ public class HelloClientInterceptor implements ClientInterceptor {
 		}
 		
 		
-		@Override
-		public void onReady() {
-			logger.info("ClientInterceptor   onReady ---start");
-			super.onReady();
-			logger.info("ClientInterceptor   onReady ---end");
-		}
-
-		@Override
-		public void onHeaders(Metadata headers) {
-			logger.info("ClientInterceptor   onHeaders ---start");
-			super.onHeaders(headers);
-			logger.info("ClientInterceptor   onHeaders ---end");
-//			String encoding = headers.get(GrpcUtil.MESSAGE_ENCODING_KEY);
-//			if (encoding == null) {
-//				throw new RuntimeException("No compression selected!");
-//			}
-//			logger.info("ClientInterceptor   onHeaders" + headers.toString());
-		}
-
-		@Override
-		public void onClose(Status status, Metadata trailers) {
-//			if (!status.isOk()) {
-//				throw status.asRuntimeException();
-//			}
-			
-			logger.info("ClientInterceptor   onClose ---start");
-			super.onClose(status,trailers);
-			logger.info("ClientInterceptor   onClose ---end");
-			
-//			logger.info("ClientInterceptor   onClose" + status.toString() + "   |   " + trailers.toString());
-		}
-		
-		@Override
-		public void onMessage(T message) {
-			
-			logger.info("ClientInterceptor   onMessage ---start");
-			super.onMessage(message);
-			logger.info("ClientInterceptor   onMessage ---end");
-									
-//			try {
-//				logger.info("ClientInterceptor   onMessage:" + pr.print((MessageOrBuilder) message).toString());
-//			} catch (InvalidProtocolBufferException e) {
-//				e.printStackTrace();
-//			}
-		}
+//		@Override
+//		public void onReady() {
+//			logger.info("ClientInterceptor   onReady ---start");
+//			super.onReady();
+//			logger.info("ClientInterceptor   onReady ---end");
+//		}
+//
+//		@Override
+//		public void onHeaders(Metadata headers) {
+//			logger.info("ClientInterceptor   onHeaders ---start");
+//			super.onHeaders(headers);
+//			logger.info("ClientInterceptor   onHeaders ---end");
+////			String encoding = headers.get(GrpcUtil.MESSAGE_ENCODING_KEY);
+////			if (encoding == null) {
+////				throw new RuntimeException("No compression selected!");
+////			}
+////			logger.info("ClientInterceptor   onHeaders" + headers.toString());
+//		}
+//
+//		@Override
+//		public void onClose(Status status, Metadata trailers) {
+////			if (!status.isOk()) {
+////				throw status.asRuntimeException();
+////			}
+//			
+//			logger.info("ClientInterceptor   onClose ---start");
+//			super.onClose(status,trailers);
+//			logger.info("ClientInterceptor   onClose ---end");
+//			
+////			logger.info("ClientInterceptor   onClose" + status.toString() + "   |   " + trailers.toString());
+//		}
+//		
+//		@Override
+//		public void onMessage(T message) {
+//			
+//			logger.info("ClientInterceptor   onMessage ---start");
+//			super.onMessage(message);
+//			logger.info("ClientInterceptor   onMessage ---end");
+//									
+////			try {
+////				logger.info("ClientInterceptor   onMessage:" + pr.print((MessageOrBuilder) message).toString());
+////			} catch (InvalidProtocolBufferException e) {
+////				e.printStackTrace();
+////			}
+//		}
 		
 		
 	}

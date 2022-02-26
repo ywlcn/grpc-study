@@ -12,7 +12,7 @@ import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.example.grpc.client.utl.GrpcConfig;
-import com.example.grpc.k8s.client.ClientSideLoadBalancedEchoClient;
+import com.example.grpc.k8s.fabricclient.ClientSideLoadBalancedEchoClient;
 import com.example.grpc.protodefine.HelloWorldGrpc;
 import com.example.grpc.protodefine.Helloworld.HelloRequest;
 import com.example.grpc.protodefine.Helloworld.PerforData;

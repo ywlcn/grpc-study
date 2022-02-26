@@ -25,6 +25,10 @@ repositories {
 dependencies {
 	implementation project(":grpc-lib")
 	
+	
+    implementation group: 'io.kubernetes', name: 'client-java', version: '14.0.0'
+	
+	
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation "io.grpc:grpc-netty:${grpcVersion}"
 	implementation "io.grpc:grpc-protobuf:${grpcVersion}"

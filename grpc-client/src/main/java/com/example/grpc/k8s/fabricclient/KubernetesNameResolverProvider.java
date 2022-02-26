@@ -1,4 +1,4 @@
-package com.example.grpc.k8s.client;
+package com.example.grpc.k8s.fabricclient;
 
 import com.google.common.base.Preconditions;
 import io.grpc.Attributes;

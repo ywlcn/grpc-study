@@ -1,9 +1,9 @@
 FROM openjdk:11
  
 #COPY target/lib /app/lib
-COPY grpc-server.jar /tmp/echo-server.jar
+COPY grpc-server.jar /tmp/grpc-server.jar
 
 EXPOSE 8080
 EXPOSE 9092
 
-ENTRYPOINT ["java", "-jar", "/tmp/echo-server.jar"]
+ENTRYPOINT ["java", "-jar", "/tmp/grpc-server.jar"]

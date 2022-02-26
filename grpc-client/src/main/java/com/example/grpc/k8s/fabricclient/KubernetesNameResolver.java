@@ -1,4 +1,4 @@
-package com.example.grpc.k8s.client;
+package com.example.grpc.k8s.fabricclient;
 
 import io.fabric8.kubernetes.api.model.Endpoints;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;

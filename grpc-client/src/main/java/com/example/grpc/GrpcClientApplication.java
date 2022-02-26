@@ -10,7 +10,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.example.grpc.client.utl.GrpcConfig;
-import com.example.grpc.k8s.client.ClientSideLoadBalancedEchoClient;
+import com.example.grpc.k8s.fabricclient.ClientSideLoadBalancedEchoClient;
 import com.example.grpc.protodefine.HelloWorldGrpc;
 import com.example.grpc.protodefine.Helloworld.HelloReply;
 import com.example.grpc.protodefine.Helloworld.HelloRequest;

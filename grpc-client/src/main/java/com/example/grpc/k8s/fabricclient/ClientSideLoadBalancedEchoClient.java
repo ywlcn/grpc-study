@@ -1,4 +1,4 @@
-package com.example.grpc.k8s.client;
+package com.example.grpc.k8s.fabricclient;
 
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
@@ -11,6 +11,7 @@ import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import com.example.grpc.client.interceptor.HelloClientInterceptor;
 import com.example.grpc.protodefine.HelloWorldGrpc;
 import com.example.grpc.protodefine.Helloworld.HelloReply;
 import com.example.grpc.protodefine.Helloworld.HelloRequest;
@@ -64,7 +65,7 @@ public class ClientSideLoadBalancedEchoClient {
 		String target = null; // "kubernetes:///default/echo-server/9092";
 
 		if (args != null && args.length > 0) {
-			target = "kubernetes:///default/hello-minikube/80";
+			target = "kubernetes:///default/hello-minikube/0000080";
 			target = args[0];
 		} else {
 //			target = "localhost:8080";30749 30388
@@ -82,11 +83,11 @@ public class ClientSideLoadBalancedEchoClient {
 //		        .loadBalancerFactory(RoundRobinLoadBalancerFactory.getInstance())
 //		        .usePlaintext(true)
 //		        .build();
-			channel = ManagedChannelBuilder.forTarget(target).defaultLoadBalancingPolicy("round_robin").usePlaintext()
+			channel = ManagedChannelBuilder.forTarget(target).defaultLoadBalancingPolicy("round_robin").intercept(new HelloClientInterceptor()).usePlaintext()
 					.build();
 
 		} else {
-			channel = ManagedChannelBuilder.forTarget(target).usePlaintext().build();
+			channel = ManagedChannelBuilder.forTarget(target).usePlaintext().intercept(new HelloClientInterceptor()).build();
 		}
 
 		accessServer(channel);
@@ -107,7 +108,7 @@ public class ClientSideLoadBalancedEchoClient {
 				while (true) {
 
 					try {
-						Thread.sleep(1000);
+						Thread.sleep(3000);
 
 						HelloReply response = stub.sayHello(HelloRequest.newBuilder()
 								.setName(self + ": " + Thread.currentThread().getName()).build());
